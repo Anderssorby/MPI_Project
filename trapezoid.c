@@ -8,7 +8,7 @@ double f(const double x) {
 
 int main(int argc, char **argv){
     double a = 0, b = 1;
-    int parts = 1000000;
+    int parts = 20;
     int i;
     int PeTot, MyRank;
     MPI_Comm SolverComm;
@@ -32,7 +32,7 @@ int main(int argc, char **argv){
     /** Compute sum over interior points **/
     for(i=0;i < parts0;i++) {
         /**printf("f(xi=%f)=%f\n", xi, f(xi));*/
-        sum0 += 2*f(xi);
+        sum0 += f(xi);
         xi += dx;
     }
     /**printf("Rank(%d) = %10.0f\n", MyRank, sum0);*/
@@ -42,7 +42,7 @@ int main(int argc, char **argv){
 
     if (MyRank == 0) {
         // Add endpoints
-        sum = dx/2*(f(a) + sum + f(b));
+        sum = dx/2*(f(a) + 2*sum - f(b));
 
         printf("Trapeziodal = %10.15f\n", sum);
     }

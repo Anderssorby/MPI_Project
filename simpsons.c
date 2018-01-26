@@ -12,18 +12,13 @@ int main(int argc, char **argv){
     int i;
     int PeTot, MyRank;
     MPI_Comm SolverComm;
-    double TimeStart, TimeEnd;
     double sum0;
     double sum;
 
     MPI_Init(&argc, &argv);
-    TimeStart = MPI_Wtime();
     MPI_Comm_size(MPI_COMM_WORLD, &PeTot);
+    /**printf("PeTot=%d\n", PeTot);*/
     MPI_Comm_rank(MPI_COMM_WORLD, &MyRank);
-
-    if (MyRank==0) {
-        printf("PeTot=%d\n", PeTot);
-    }
 
     /*int_0^1(4/(1+x^2)dx)*/
 
@@ -37,7 +32,7 @@ int main(int argc, char **argv){
     /** Compute sum over interior points **/
     for(i=0;i < parts0;i++) {
         /**printf("f(xi=%f)=%f\n", xi, f(xi));*/
-        sum0 += f(xi);
+        sum0 += f(xi + dx/2);
         xi += dx;
     }
     /**printf("Rank(%d) = %10.0f\n", MyRank, sum0);*/
@@ -47,13 +42,10 @@ int main(int argc, char **argv){
 
     if (MyRank == 0) {
         // Add endpoints
-        sum = dx/2*(f(a) + 2*sum - f(b));
+        sum = (b-a)/6*(f(a) + 4*sum - 3*f(b));
 
-        printf("Trapeziodal = %10.15f\n", sum);
+        printf("Simpsons = %10.15f\n", sum);
     }
-
-    TimeEnd = MPI_Wtime();
-    printf("Time (%5d) %16.6E\n", MyRank, TimeEnd - TimeStart);
 
     MPI_Finalize();
 

@@ -6,6 +6,7 @@ int main(int argc, char **argv){
     int i;
     int PeTot, MyRank;
     MPI_Comm SolverComm;
+    double TimeStart, TimeEnd;
     double vec[8];
     double sum0;
     char FileName[80];

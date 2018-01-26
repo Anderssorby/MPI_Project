@@ -17,6 +17,8 @@ int main(int argc, char **argv){
     MPI_Comm_size(MPI_COMM_WORLD, &PeTot);
     MPI_Comm_rank(MPI_COMM_WORLD, &MyRank);
 
+    TimeStart = MPI_Wtime();
+
     sprintf(FileName, "a1.%d", MyRank);
 
     fp = fopen(FileName, "r");
@@ -40,6 +42,9 @@ int main(int argc, char **argv){
 
         printf("||x|| = %10.0f\n", normsum);
     }
+
+    TimeEnd = MPI_Wtime();
+    printf("Time (%5d) %16.6E\n", MyRank, TimeEnd - TimeStart);
 
     MPI_Finalize();
 

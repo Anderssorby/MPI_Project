@@ -8,7 +8,7 @@ double f(const double x) {
 
 int main(int argc, char **argv){
     double a = 0, b = 1;
-    int parts = 20;
+    int parts = 2000;
     int i;
     int PeTot, MyRank;
     MPI_Comm SolverComm;
@@ -22,7 +22,7 @@ int main(int argc, char **argv){
     MPI_Comm_rank(MPI_COMM_WORLD, &MyRank);
 
     if (MyRank==0) {
-        printf("PeTot=%d\n", PeTot);
+        printf("parts=%d, PeTot=%d\n", parts, PeTot);
     }
 
     /*int_0^1(4/(1+x^2)dx)*/
